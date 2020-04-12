@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutternews/pages/welcome/welcome.dart';
+import 'package:flutternews/routes.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: WelcomePage(),
+      routes: staticRoutes,
     );
   }
 }
