@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutternews/common/api/api.dart';
+import 'package:flutternews/common/entity/entity.dart';
 import 'package:flutternews/common/utils/screen.dart';
+import 'package:flutternews/common/utils/security.dart';
 import 'package:flutternews/common/utils/utils.dart';
 import 'package:flutternews/common/values/colors.dart';
 import 'package:flutternews/common/values/values.dart';
@@ -24,7 +27,7 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   // 执行登录
-  _handleSignIn() {
+  _handleSignIn() async {
     if (!duIsEmail(_emailController.value.text)) {
       toastInfo(msg: "请输入正确邮箱");
       return;
@@ -33,6 +36,13 @@ class _SignInPageState extends State<SignInPage> {
       toastInfo(msg: "密码不能小于6位");
       return;
     }
+
+    UserRequestEntity params = UserRequestEntity(
+        email: _emailController.value.text,
+        password: duSHA256(_passController.value.text));
+
+    UserResponseEntity res = await UserAPI.login(params: params);
+    print(res);
   }
 
   /// logo
@@ -235,14 +245,13 @@ class _SignInPageState extends State<SignInPage> {
     return Container(
       margin: EdgeInsets.only(bottom: duSetHeight(20)),
       child: btnFlatButtonWidget(
-        onPressed: _handleNavSignUp,
-        width: 294,
-        gbColor: AppColors.secondaryElement,
-        fontColor: AppColors.primaryText,
-        title: "Sign up",
-        fontWeight: FontWeight.w500,
-        fontSize: 16
-      ),
+          onPressed: _handleNavSignUp,
+          width: 294,
+          gbColor: AppColors.secondaryElement,
+          fontColor: AppColors.primaryText,
+          title: "Sign up",
+          fontWeight: FontWeight.w500,
+          fontSize: 16),
     );
   }
 
